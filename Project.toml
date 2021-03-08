@@ -1,0 +1,4 @@
+name = "ConvolutionalFactorizations"
+uuid = "2f15623e-e53f-4337-8528-f301fa2431ee"
+authors = ["degleris1 <degleris1@gmail.com>"]
+version = "0.1.0"
