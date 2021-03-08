@@ -23,7 +23,7 @@ export tensor_conv, tensor_conv!
 
 # Loss functions, penalizers, and constraints
 export SquareLoss, AbsoluteLoss, MaskedLoss
-export SqaurePenalty, AbsolutePenalty
+export SquarePenalty, AbsolutePenalty
 export NonnegConstraint, UnitNormConstraint
 
 
