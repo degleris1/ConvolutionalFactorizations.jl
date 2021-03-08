@@ -11,16 +11,15 @@ $ cd ConvolutionalFactorizations.jl
 $ julia
 ```
 
+From the Julia REPL, press `]` to enter package mode, and run:
+
 ```julia
-$ julia> ] dev .
+pkg> dev .
 ```
 
-Alternatively, if you're not a developer, all you need to do is run:
+Then press `[delete]` to exit package mode.
+Alternatively, if you're not a developer, all you need to do is open up the Julia REPL, press `]` to enter package mode, and run:
 
-```
-$ julia
-```
-
-```
-$ julia> ] add https://github.com/degleris1/ConvolutionalFactorizations.jl.git
+```julia
+pkg> add https://github.com/degleris1/ConvolutionalFactorizations.jl.git
 ```
