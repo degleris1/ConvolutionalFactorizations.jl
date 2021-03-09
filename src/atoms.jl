@@ -1,5 +1,9 @@
 # Loss functions, penalizers, and constraints
 
+abstract type AbstractLoss end
+abstract type AbstractPenalty end
+abstract type AbstractConstraint end
+
 # ===
 # LOSS FUNCTIONS
 # ===

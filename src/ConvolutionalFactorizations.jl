@@ -5,8 +5,8 @@ module ConvolutionalFactorizations
 # ===
 
 # Load modules
-using LinearAlgebra: mul!
-using MLJModelInterface: @mlj_model, Unsupervised
+using LinearAlgebra: mul!, norm
+using MLJModelInterface: @mlj_model, Unsupervised, fit
 
 # Import modules for function redefinition
 import MLJModelInterface
@@ -26,7 +26,8 @@ export SquareLoss, AbsoluteLoss, MaskedLoss
 export SquarePenalty, AbsolutePenalty
 export NonnegConstraint, UnitNormConstraint
 
-
+# Model
+export ConvolutionalFactorization, fit
 
 
 # ===
@@ -35,9 +36,7 @@ export NonnegConstraint, UnitNormConstraint
 
 notyetimplemented() = error("Not yet implemented.")
 
-abstract type AbstractLoss end
-abstract type AbstractPenalty end
-abstract type AbstractConstraint end
+
 
 
 
@@ -46,6 +45,13 @@ abstract type AbstractConstraint end
 # INCLUDE FILES
 # ===
 
+# Atom types and functionality
+include("atoms.jl")
+
+# MLJ Model
+include("model.jl")
+
+# Convolution methods
 include("convolve.jl")
 
 
