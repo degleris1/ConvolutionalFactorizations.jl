@@ -5,6 +5,7 @@ module ConvolutionalFactorizations
 # ===
 
 # Load modules
+using Base: @kwdef
 using LinearAlgebra: mul!, norm
 using MLJModelInterface: @mlj_model, Unsupervised, fit
 
@@ -30,15 +31,6 @@ export NonnegConstraint, UnitNormConstraint
 export ConvolutionalFactorization, fit
 
 
-# ===
-# TYPES AND CONSTANTS
-# ===
-
-notyetimplemented() = error("Not yet implemented.")
-
-
-
-
 
 
 # ===
@@ -53,6 +45,23 @@ include("model.jl")
 
 # Convolution methods
 include("convolve.jl")
+
+# Algorithms
+include("alternating.jl")
+include("pgd.jl")
+
+
+
+
+# ===
+# TYPES AND CONSTANTS
+# ===
+
+notyetimplemented() = error("Not yet implemented.")
+
+RULES = Dict(
+    :pgd => ProjectedGradientDescent(),
+)
 
 
 

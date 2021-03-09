@@ -13,13 +13,6 @@
     max_time::Float64 = Inf::(_ > 0)
 end
 
-function compute_loss(model::ConvolutionalFactorization, X, W, H)
-    loss = model.loss(X, tensor_conv(W, H))
-    loss += sum([R(W) for R in model.W_penalizers])
-    loss += sum([R(H) for R in model.H_penalizers])
-    return loss
-end
-
 function MLJModelInterface.fit(
     model::ConvolutionalFactorization, 
     verbosity::Int, 
@@ -32,11 +25,7 @@ function MLJModelInterface.fit(
     W0, H0 = init_rand(X, model.L, model.K)
 
     # Fit with alternating optimization
-    W, H, report = fit_alternating(model, X, W0, H0, verbose=(verbosity > 0))
-
-    fitresult = (W=W, H=H)
-    cache = nothing
-    return fitresult, cache, report
+    return fit_alternating(model, X, W0, H0, verbose=(verbosity > 0))
 end
 
 function MLJModelInterface.update(
