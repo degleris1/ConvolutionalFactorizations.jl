@@ -8,6 +8,7 @@ module ConvolutionalFactorizations
 using Base: @kwdef
 using LinearAlgebra: mul!, norm
 using MLJModelInterface: @mlj_model, Unsupervised, fit
+using Random: seed!
 
 # Import modules for function redefinition
 import MLJModelInterface
@@ -60,7 +61,7 @@ include("pgd.jl")
 notyetimplemented() = error("Not yet implemented.")
 
 RULES = Dict(
-    :pgd => ProjectedGradientDescent(),
+    :pgd => pgd(),
 )
 
 

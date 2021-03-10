@@ -166,9 +166,17 @@ AbstractConstraint
 
 projection!(C::AbstractConstraint, x) = notyetimplemented()
 
-projection!(C::Nothing, x) = x
 
 
+
+"""
+    No constraint.
+"""
+struct NoConstraint <: AbstractConstraint end
+
+function projection!(C::NoConstraint, x)
+    return x
+end
 
 
 

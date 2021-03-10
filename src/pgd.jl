@@ -1,37 +1,36 @@
 # Projected gradient descent
 
-@kwdef struct ProjectGradientDescent <: AbstractUpdateRule
+@kwdef struct ProjectedGradientDescent <: AbstractUpdateRule
     step_incr
     step_decr
     step_init
 end
 
-ProjectGradientDescent() = 
-    ProjectGradientDescent(step_incr=1.05, step_decr=0.70, step_init=5)
+pgd() = ProjectedGradientDescent(step_incr=1.05, step_decr=0.70, step_init=5)
 
-
-function initialize(opt::ProjectGradientDescent, vars, model)
-    b̂, x, θ = vars
+function initialize(opt::ProjectedGradientDescent, vars, problem)
+    b̂, x = vars
+    b, loss_func, penalizers, constraint, set_dx!, sync!, compute_loss = problem
 
     η = opt.step_init
     dx = similar(x)
+    loss = compute_loss()
 
-    return (η=η, dx=dx, loss=?, vars=vars, model=model)
+    return (η=η, dx=dx, loss=loss, vars=vars, problem=problem)
 end
 
-function step!(opt::ProjectGradientDescent, state)
-    η, dx, old_loss, vars, model = state
+function step!(opt::ProjectedGradientDescent, state)
+    η, dx, old_loss, vars, problem = state
 
-    b̂, x, θ = vars
-    b, loss_func, penalizers, constraint, set_gradx!, predict!, compute_loss = model
+    b̂, x = vars
+    b, loss_func, penalizers, constraint, set_dx!, sync!, compute_loss = problem
     
     # Step 1: compute gradient (d/dx) J(x)
-    # Compute (d/db̂) D(b, b̂) and store it in b̂
+    # Compute (d/db̂) D(b̂, b) and store it in b̂
     grad!(loss_func, b̂, b̂, b)
 
     # Compute db̂/dx
-    set_gradx!(dx, θ)
-    dx .= 0  # TODO
+    set_dx!(dx)
 
     # Add in (d/dx) R(x)
     for R in penalizers
@@ -44,9 +43,9 @@ function step!(opt::ProjectGradientDescent, state)
     projection!(constraint, x)
 
     # Step 3: update b̂ and step size
-    predict!(b̂, x, θ) 
-    new_loss = compute_loss(b, b̂, x, θ)
+    sync!() 
+    new_loss = compute_loss()
     η *= (new_loss < old_loss) ? opt.step_incr : opt.step_decr
 
-    return (η=η, dx=dx, loss=new_loss, vars=vars, model=model)
+    return (η=η, dx=dx, loss=new_loss, vars=vars, problem=problem)
 end
