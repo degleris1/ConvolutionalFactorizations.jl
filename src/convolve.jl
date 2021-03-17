@@ -51,3 +51,26 @@ function _shift_dot!(B, Wl, H, lag, α, β)
 
     return B
 end
+
+function tensor_transconv!(out, W, X)
+    K, N, L = size(W)
+    T = size(X, 2)
+
+    @. out = 0
+    for lag = 0:(L-1)
+        @views mul!(out[:, 1:T-lag], W[:, :, lag+1], shift_cols(X, -lag), 1, 1)
+    end
+
+    return out
+end
+
+function shift_cols(X, lag)
+    T = size(X, 2)
+    
+    if (lag <= 0)
+        return view(X, :, 1-lag:T)
+
+    else  # lag > 0
+        return view(X, :, 1:T-lag)
+    end
+end
