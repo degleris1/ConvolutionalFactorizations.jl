@@ -40,7 +40,7 @@ function generate_toy_data()
     H[2, 30] = 1
     H[2, 38] = 0.5
 
-    H = [H H H H H]
+    H = [H H]
 
     X = cf.tensor_conv(W, H)
 
